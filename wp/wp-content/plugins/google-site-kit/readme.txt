@@ -4,7 +4,7 @@ Contributors:      google
 Requires at least: 5.2
 Tested up to:      7.1
 Requires PHP:      7.4
-Stable tag:        1.187.0
+Stable tag:        1.191.0
 License:           Apache License 2.0
 License URI:       https://www.apache.org/licenses/LICENSE-2.0
 Tags:              google, search-console, analytics, adsense, pagespeed-insights
@@ -112,30 +112,45 @@ Please create a new topic on our [WordPress.org support forum](https://wordpress
 
 == Changelog ==
 
-= 1.187.0 =
+= 1.191.0 =
 
 **Enhanced**
 
-* Remove "Site Goals" feature flag (feature is fully-available). See [#13420](https://github.com/google/site-kit-wp/issues/13420).
-* Add Site Health debug data for the Content_Events provider. See [#13292](https://github.com/google/site-kit-wp/issues/13292).
-* Add the `pagination_click` event tracking. See [#13289](https://github.com/google/site-kit-wp/issues/13289).
-* Add embedded video events tracking. See [#13288](https://github.com/google/site-kit-wp/issues/13288).
-* Add the "Add Features" admin menu item, and a placeholder screen for the Feature Discovery Hub. See [#13244](https://github.com/google/site-kit-wp/issues/13244).
-* Fix bugs with overlapping notifications. See [#13219](https://github.com/google/site-kit-wp/issues/13219).
-* Update the email report notice UI. See [#13086](https://github.com/google/site-kit-wp/issues/13086).
-* Implement the Reader Revenue Manager express setup step to connect an existing publication. See [#13021](https://github.com/google/site-kit-wp/issues/13021).
-* Add the "Subscribed users" tab to the email reporting settings. See [#13011](https://github.com/google/site-kit-wp/issues/13011).
-* Add Reader Revenue Manager Organization ID and Configured CTAs fields to Site Health debug information. See [#13000](https://github.com/google/site-kit-wp/issues/13000).
-* Improve page performance by decreasing preloaded subscriber content. See [#12857](https://github.com/google/site-kit-wp/issues/12857).
-* Add a warning notice to the Site Goals widget when event provider plugin is deactivated. See [#12773](https://github.com/google/site-kit-wp/issues/12773).
-* Fix error displaying issues for email reports. See [#12356](https://github.com/google/site-kit-wp/issues/12356).
-* Don't show the RRM introductory overlay if the selected publication has an extreme policy violation. See [#12291](https://github.com/google/site-kit-wp/issues/12291).
-* Improve UX/UI on Email subscription panel. See [#12188](https://github.com/google/site-kit-wp/issues/12188).
+* Add support for plain permalinks to the "Top posts by visitors" column in the "Recent activity" tab. See [#13894](https://github.com/google/site-kit-wp/issues/13894).
+* Add `landingPage` and `sessionCampaignName` to shared Analytics report dimensions. See [#13843](https://github.com/google/site-kit-wp/issues/13843).
+* Remove the dashboard notification to resume a Reader Revenue Manager newsletter express setup, to be replaced by the generic resumption notification provided by the Feature Discovery Hub. See [#13794](https://github.com/google/site-kit-wp/issues/13794).
+* Improve handling of Sign in with Google on sites with shared email addresses. See [#13792](https://github.com/google/site-kit-wp/issues/13792).
+* Add support for tracking in-progress feature setups in the Feature Discovery Hub. See [#13784](https://github.com/google/site-kit-wp/issues/13784).
+* Add the `DraggableList` component that shows a list of items which can be dragged to reorder them. See [#13725](https://github.com/google/site-kit-wp/issues/13725).
+* Scaffold the Reader Revenue Manager survey CTA's setup flow. See [#13720](https://github.com/google/site-kit-wp/issues/13720).
+* Add a "Latest content" tab listing recently published posts and their early performance. See [#13696](https://github.com/google/site-kit-wp/issues/13696).
+* Add a feedback prompt to the "Recent activity" tab. See [#13693](https://github.com/google/site-kit-wp/issues/13693).
+* Add link to see Recent Posts to Fresh Data UI. See [#13692](https://github.com/google/site-kit-wp/issues/13692).
+* Add a section to the "Recent activity" tab that shows how the most recently published post is performing. See [#13686](https://github.com/google/site-kit-wp/issues/13686).
+* Show the top posts, channels and referrals driving recent traffic in the "Recent activity" tab. See [#13685](https://github.com/google/site-kit-wp/issues/13685).
+* Show an insight notice comparing recent traffic to the site's typical performance. See [#13684](https://github.com/google/site-kit-wp/issues/13684).
+* Show fresh visitor, clicks, and impression totals in the "Recent activity" tab. See [#13683](https://github.com/google/site-kit-wp/issues/13683).
+* Add the new date picker's trigger button and panel, and apply the draft date selection. See [#13611](https://github.com/google/site-kit-wp/issues/13611).
+* Add GA event tracking for the links on the Reader Revenue Manager express setup complete step. See [#13574](https://github.com/google/site-kit-wp/issues/13574).
+* Add GA event tracking for the Reader Revenue Manager express setup flow. See [#13573](https://github.com/google/site-kit-wp/issues/13573).
+* Add GA event tracking for the Reader Revenue Manager setup banner and express setup banner on the dashboard. See [#13571](https://github.com/google/site-kit-wp/issues/13571).
+* Remove the `setupFlowRefreshPhase4` feature flag, now that the refreshed setup flow is available to all users. See [#13530](https://github.com/google/site-kit-wp/issues/13530).
+* Show a progress bar and error notices on the initial Reader Revenue Manager express setup screen. See [#13506](https://github.com/google/site-kit-wp/issues/13506).
+* Enable setting up dashboard sharing, email reports, and downloading the PDF report from the Feature Discovery Hub. See [#13347](https://github.com/google/site-kit-wp/issues/13347).
+* Enable setting up the enhanced measurement feature on the Feature Discovery Hub. See [#13341](https://github.com/google/site-kit-wp/issues/13341).
+* Return the user to the Feature Discovery Hub when initiating setup there for the Analytics, Ads (PAX flow), and ad blocking recovery features. See [#13340](https://github.com/google/site-kit-wp/issues/13340).
+* Show an error notice in the Feature Discovery Hub when a feature’s setup fails. See [#13339](https://github.com/google/site-kit-wp/issues/13339).
+* Flesh out the Description, Requirements and Screenshots tabs for the Feature Discovery Hub's detail panel. See [#13331](https://github.com/google/site-kit-wp/issues/13331).
+* Add category filter chips to the Feature Discovery Hub's "All services and features" tab. See [#13329](https://github.com/google/site-kit-wp/issues/13329).
+* Update the PDF export panel to label the AdSense section "Monetization", matching the dashboard navigation. See [#13318](https://github.com/google/site-kit-wp/issues/13318).
+* Show only one error when Analytics setup fails. See [#13267](https://github.com/google/site-kit-wp/issues/13267).
+* Update the PDF progress message text. See [#13226](https://github.com/google/site-kit-wp/issues/13226).
 
 **Fixed**
 
-* Hide the "Tell us more" link in Site Goals Thumbs up / down feedback. See [#13448](https://github.com/google/site-kit-wp/issues/13448).
-* Fix bug that could cause the UI to remain in a loading state instead of showing an error when a request failed. See [#13293](https://github.com/google/site-kit-wp/issues/13293).
-* Ensure that the `useRefocus()` hook's callback fires consistently in all cases. See [#8297](https://github.com/google/site-kit-wp/issues/8297).
+* Prevent unnecessary notifications from appearing after completing a newsletter setup. See [#13885](https://github.com/google/site-kit-wp/issues/13885).
+* Scroll Reader Revenue Manager express setup error notices into view. See [#13874](https://github.com/google/site-kit-wp/issues/13874).
+* Fix an issue displaying CTAs from the previously connected publication in Reader Revenue Manager settings. See [#13872](https://github.com/google/site-kit-wp/issues/13872).
+* Fix the Partial data badge pushing its card's rows out of line with the other card in the Your visitor groups section of the PDF report. See [#13221](https://github.com/google/site-kit-wp/issues/13221).
 
 [See changelog for all versions](https://raw.githubusercontent.com/google/site-kit-wp/main/changelog.txt).
