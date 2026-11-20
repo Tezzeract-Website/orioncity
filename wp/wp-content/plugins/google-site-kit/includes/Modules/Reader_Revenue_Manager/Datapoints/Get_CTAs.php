@@ -14,6 +14,8 @@ use Google\Site_Kit\Core\Modules\Datapoint;
 use Google\Site_Kit\Core\Modules\Executable_Datapoint;
 use Google\Site_Kit\Core\REST_API\Data_Request;
 use Google\Site_Kit\Core\REST_API\Exception\Missing_Required_Setting_Exception;
+use Google\Site_Kit\Modules\Reader_Revenue_Manager\Synchronization\CTA as CTA_Synchronization;
+use Google\Site_Kit_Dependencies\Google\Service\WebContentPublisher\Cta;
 
 /**
  * Class for the CTAs retrieval datapoint.
@@ -33,6 +35,14 @@ class Get_CTAs extends Datapoint implements Executable_Datapoint {
 	private $settings;
 
 	/**
+	 * CTA synchronization instance.
+	 *
+	 * @since 1.188.0
+	 * @var CTA_Synchronization
+	 */
+	private $synchronization;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.187.0
@@ -42,7 +52,8 @@ class Get_CTAs extends Datapoint implements Executable_Datapoint {
 	public function __construct( array $definition ) {
 		parent::__construct( $definition );
 
-		$this->settings = $definition['settings'];
+		$this->settings        = $definition['settings'];
+		$this->synchronization = new CTA_Synchronization( $this->settings );
 	}
 
 	/**
@@ -81,12 +92,28 @@ class Get_CTAs extends Datapoint implements Executable_Datapoint {
 	 * Parses a response.
 	 *
 	 * @since 1.187.0
+	 * @since 1.192.0 Excludes CTAs that are neither active nor draft, such as deleted CTAs.
 	 *
 	 * @param mixed        $response List CTAs response.
 	 * @param Data_Request $data     Data request object.
 	 * @return array CTA resources.
 	 */
 	public function parse_response( $response, Data_Request $data ) {
-		return array_values( (array) $response->getCtas() );
+		$ctas = array_values(
+			array_filter(
+				(array) $response->getCtas(),
+				function ( $cta ) {
+					return $cta instanceof Cta && in_array(
+						$cta->getState(),
+						array( Cta::STATE_ACTIVE, Cta::STATE_DRAFT ),
+						true
+					);
+				}
+			)
+		);
+
+		$this->synchronization->synchronize( $ctas );
+
+		return $ctas;
 	}
 }

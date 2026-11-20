@@ -31,13 +31,14 @@ class KB {
 		'free-account'                    => 'https://rankmath.com/my-account/',
 		'support'                         => 'https://rankmath.com/support/',
 		'pro'                             => 'https://rankmath.com/pricing/',
+		'ai-pricing'                      => 'https://rankmath.com/ai/pricing/',
 		'site-checkout'                   => 'https://rankmath.com/site-checkout/',
 		'changelog'                       => 'https://rankmath.com/changelog/',
 		'changelog-free'                  => 'https://rankmath.com/changelog/free/',
 		'help-affiliate'                  => 'https://rankmath.com/affiliates/',
 		'seo-care'                        => 'https://rankmath.com/services/',
 		'content-ai'                      => 'https://rankmath.com/content-ai/',
-		'content-ai-pricing-tables'       => 'https://rankmath.com/content-ai/?#pricing-tables',
+		'content-ai-pricing-tables'       => 'https://rankmath.com/ai/pricing/',
 		'content-ai-restore-credits'      => 'https://rankmath.com/kb/how-to-restore-missing-content-ai-credits/',
 		'free-vs-pro'                     => 'https://rankmath.com/free-vs-pro/',
 		'google-updates'                  => 'https://rankmath.com/google-updates/',
@@ -45,6 +46,7 @@ class KB {
 		'logo'                            => 'https://rankmath.com/wordpress/plugin/seo-suite/',
 		'offer'                           => 'https://rankmath.com/offer/',
 		'terms-and-conditions'            => 'https://rankmath.com/terms-and-conditions/',
+		'privacy-policy'                  => 'https://rankmath.com/privacy-policy/',
 
 		// Knowledgebase.
 		'knowledgebase'                   => 'https://rankmath.com/kb/',
@@ -148,6 +150,7 @@ class KB {
 		'analysis-search-console'         => 'https://rankmath.com/kb/seo-analysis/?#search-console-test',
 		'analysis-sitemaps'               => 'https://rankmath.com/kb/seo-analysis/?#sitemaps-test',
 		'analysis-auto-update'            => 'https://rankmath.com/kb/seo-analysis/?#priority',
+		'llms'                            => 'https://rankmath.com/kb/llms-txt/',
 
 		// Link Genius.
 		'link-genius'                     => 'https://rankmath.com/kb/wordpress/ai-link-genius/',
@@ -155,6 +158,9 @@ class KB {
 		// AI Visibility.
 		'ai-visibility'                   => 'https://rankmath.com/kb/track-ai-visibility/',
 		'ai-visibility-connect'           => 'https://rankmath.com/kb/how-to-connect-or-disconnect-rank-math/',
+
+		// AI Assistant.
+		'assistant-site-access'           => 'https://rankmath.com/kb/assistant-site-access/',
 
 		// Social Media.
 		'yt-link'                         => 'http://youtube.com/rankmath',
