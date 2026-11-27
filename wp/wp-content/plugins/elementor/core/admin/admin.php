@@ -3,9 +3,8 @@ namespace Elementor\Core\Admin;
 
 use Elementor\Api;
 use Elementor\Beta_Testers;
-use Elementor\App\Modules\Onboarding\Module as Onboarding_Module;
+use Elementor\App\Modules\Onboarding\Onboarding_Entry;
 use Elementor\Core\Base\App;
-use Elementor\Core\Upgrade\Manager as Upgrade_Manager;
 use Elementor\Core\Utils\Assets_Config_Provider;
 use Elementor\Core\Utils\Collection;
 use Elementor\Includes\EditorAssetsAPI;
@@ -75,39 +74,15 @@ class Admin extends App {
 	 * @access public
 	 */
 	public function maybe_redirect_to_getting_started() {
-		if ( ! get_transient( 'elementor_activation_redirect' ) ) {
+		$decision = Onboarding_Entry::decide();
+
+		if ( Onboarding_Entry::DECISION_REDIRECT !== $decision['type'] ) {
 			return;
 		}
 
-		if ( wp_doing_ajax() ) {
-			return;
-		}
+		wp_safe_redirect( Onboarding_Entry::get_url() );
 
-		delete_transient( 'elementor_activation_redirect' );
-
-		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) {
-			return;
-		}
-
-		$already_had_onboarding = get_option( Onboarding_Module::ONBOARDING_OPTION );
-
-		// Get the latest installation from Elementor's Install log in the DB.
-		$latest_install = key( Upgrade_Manager::get_installs_history() );
-
-		if ( ! empty( $latest_install ) ) {
-			$is_new_install = version_compare( $latest_install, '3.6.0-beta', '>=' );
-		} else {
-			// If `$latest_install` is not set, Elementor was never installed on this site.
-			$is_new_install = true;
-		}
-
-		if ( $already_had_onboarding || ! $is_new_install ) {
-			return;
-		}
-
-		wp_safe_redirect( admin_url( 'admin.php?page=elementor-app#onboarding' ) );
-
-		exit;
+		die;
 	}
 
 	private function register_packages() {
@@ -493,6 +468,14 @@ class Admin extends App {
 		<div class="e-dashboard-overview e-dashboard-widget">
 			<?php
 			self::elementor_dashboard_overview_header();
+
+			/**
+			 * Elementor dashboard widget after the header section.
+			 *
+			 * @since 4.5.0
+			 */
+			do_action( 'elementor/admin/dashboard_overview_widget/after_header' );
+
 			self::elementor_dashboard_overview_recently_edited();
 			self::elementor_dashboard_overview_news_updates();
 			self::elementor_dashboard_overview_footer();
@@ -744,11 +727,7 @@ class Admin extends App {
 		 *
 		 * @param array $meta Post meta data.
 		 */
-		$meta = [];
-
-		if ( isset( $_GET['meta'] ) && is_array( $_GET['meta'] ) ) {
-			$meta = array_map( 'sanitize_text_field', wp_unslash( $_GET['meta'] ) );
-		}
+		$meta = $this->get_new_post_meta_from_request();
 
 		$meta = apply_filters( 'elementor/admin/create_new_post/meta', $meta );
 
@@ -866,6 +845,39 @@ class Admin extends App {
 			ARRAY_FILTER_USE_KEY
 		);
 	}
+
+	private function get_new_post_meta_from_request(): array {
+		$request_meta = Utils::get_super_global_value( $_GET, 'meta' ) ?? [];
+
+		if ( ! is_array( $request_meta ) ) {
+			return [];
+		}
+
+		$allowed_protected_keys = apply_filters(
+			'elementor/admin/create_new_post/allowed_protected_meta_keys',
+			[
+				'_elementor_source',
+				Floating_Buttons_Module::FLOATING_ELEMENTS_TYPE_META_KEY,
+			]
+		);
+
+		$meta = [];
+
+		foreach ( $request_meta as $meta_key => $meta_value ) {
+			if ( ! is_string( $meta_key ) || ! is_scalar( $meta_value ) ) {
+				continue;
+			}
+
+			if ( is_protected_meta( $meta_key, 'post' ) && ! in_array( $meta_key, $allowed_protected_keys, true ) ) {
+				continue;
+			}
+
+			$meta[ $meta_key ] = sanitize_text_field( (string) $meta_value );
+		}
+
+		return $meta;
+	}
+
 	/**
 	 * @since 2.3.0
 	 * @access public

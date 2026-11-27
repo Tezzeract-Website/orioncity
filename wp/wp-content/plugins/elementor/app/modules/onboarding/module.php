@@ -2,6 +2,7 @@
 namespace Elementor\App\Modules\Onboarding;
 
 use Automatic_Upgrader_Skin;
+use Elementor\App\Modules\Onboarding\Notices\Finish_Setup_Notice;
 use Elementor\Core\Base\Module as BaseModule;
 use Elementor\Core\Common\Modules\Ajax\Module as Ajax;
 use Elementor\Core\Common\Modules\Connect\Apps\Library;
@@ -173,6 +174,7 @@ class Module extends BaseModule {
 			'isExperiment202Enabled' => $this->is_experiment_enabled( self::EXPERIMENT_EMPHASIZE_THEME_VALUE_AUDIENCE_202 ),
 			'isExperiment401Enabled' => $this->is_experiment_enabled( self::EXPERIMENT_UPDATE_COPY_VISUALS ),
 			'isExperiment402Enabled' => $this->is_experiment_enabled( self::EXPERIMENT_REDUCE_HIERARCHY_BLANK_OPTION ),
+			'accountScreen' => Account_Screen_Assets::get_editor_config(),
 			'experimentNames' => [
 				'101' => self::EXPERIMENT_EMPHASIZE_CONNECT_BENEFITS,
 				'201' => self::EXPERIMENT_OFFER_THEME_CHOICES_HELLO_BIZ,
@@ -470,6 +472,7 @@ class Module extends BaseModule {
 
 		if ( ! $db_option ) {
 			update_option( self::ONBOARDING_OPTION, true );
+			Onboarding_Entry::clear_pending();
 		}
 
 		return [
@@ -559,5 +562,11 @@ class Module extends BaseModule {
 		} );
 
 		$this->get_component( 'features_usage' )->register();
+
+		add_filter( 'elementor/core/admin/notices', function ( array $notices ) {
+			array_unshift( $notices, new Finish_Setup_Notice() );
+
+			return $notices;
+		}, 5 );
 	}
 }

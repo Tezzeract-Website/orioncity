@@ -60,6 +60,11 @@ class Content_AI {
 	 * @param array $data Localized data for posts.
 	 */
 	public function localized_data( $data = [] ) {
+		// The connection data holds the site's API key. Never expose it to users who cannot use Content AI.
+		if ( ! Helper::has_cap( 'content_ai' ) ) {
+			return;
+		}
+
 		$refresh_date = Helper::get_content_ai_refresh_date();
 		Helper::add_json(
 			'contentAI',
@@ -69,6 +74,7 @@ class Content_AI {
 					'audience'              => (array) Helper::get_settings( 'general.content_ai_audience', 'General Audience' ),
 					'tone'                  => (array) Helper::get_settings( 'general.content_ai_tone', 'Formal' ),
 					'language'              => Helper::get_settings( 'general.content_ai_language', Helper::content_ai_default_language() ),
+					'languages'             => Helper::get_content_ai_languages(),
 					'history'               => Helper::get_outputs(),
 					'chats'                 => Helper::get_chats(),
 					'recentPrompts'         => Helper::get_recent_prompts(),

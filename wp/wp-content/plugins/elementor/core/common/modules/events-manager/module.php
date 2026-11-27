@@ -9,6 +9,7 @@ use Elementor\Core\Common\Modules\EventsManager\RestApi\Events_Proxy_REST_API;
 use Elementor\Core\Experiments\Manager as Experiments_Manager;
 use Elementor\Includes\EditorAssetsAPI;
 use Elementor\Utils;
+use Elementor\Modules\EditorOne\Classes\Menu_Data_Provider;
 use Elementor\Plugin;
 use Elementor\Tracker;
 
@@ -73,6 +74,8 @@ class Module extends BaseModule {
 			'session_recording_percent' => $session_recording_percent,
 		];
 
+		$settings['menuEventIds'] = Menu_Data_Provider::instance()->get_event_ids_by_slug();
+
 		return $settings;
 	}
 
@@ -116,7 +119,11 @@ class Module extends BaseModule {
 		];
 	}
 
-	private static function can_send_events(): bool {
+	public static function can_send_events(): bool {
+		if ( empty( Plugin::$instance ) || empty( Plugin::$instance->experiments ) ) {
+			return false;
+		}
+
 		return ! empty( ELEMENTOR_EDITOR_EVENTS_MIXPANEL_TOKEN ) &&
 			Tracker::is_allow_track() &&
 			! Tracker::has_terms_changed() &&
